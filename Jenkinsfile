@@ -26,6 +26,17 @@ pipeline {
                 sh 'mdl --style all --warnings --git-recurse \${WORKSPACE}'
             }
         }
+        stage('test golang') {
+            agent { docker { image 'golang:1.13' } }
+            environment {
+                XDG_CACHE_HOME='/tmp/.cache'
+                GOOS='linux'
+                GOARCH='amd64'
+        }        
+            steps {
+                script { checkgolang }
+            }
+        }
         stage('Prepare ansible environment') {
             agent any
             environment {
