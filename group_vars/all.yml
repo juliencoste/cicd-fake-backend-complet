@@ -6,6 +6,9 @@ fake_backend_image_tag: "CICD"
 
 home: "/home/centos"
 volume_database: "/db-data"
+ip_addr_preprod: "54.160.112.136"
+ip_addr_prod: "52.86.186.195"
+port_app: "80"
 
 #secret data vaulted
 github_private_key: "{{ vault_github_private_key }}"
