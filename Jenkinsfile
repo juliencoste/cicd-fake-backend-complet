@@ -1,6 +1,15 @@
+/* import shared library */
+@Library('jenkins-shared-library')_
+
 pipeline {
     agent none
-    stages {    
+    stages {
+        stage('Check bash syntax') {
+            agent { docker { image 'koalaman/shellcheck-alpine:stable' } }
+            steps {
+                script { bashCheck }
+            }
+        }
         stage('Check yaml syntax') {
             agent { docker { image 'sdesbure/yamllint' } }
             steps {
@@ -126,4 +135,15 @@ pipeline {
             }
          }
       }
-   }
+
+      post {
+        always {
+          script {
+         
+            /* Use slackNotifier.groovy from shared library and provide current build result as parameter */
+            clean
+            slackNotifier currentBuild.result
+          }
+        }
+      }
+}
